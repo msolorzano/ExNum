@@ -19,15 +19,6 @@ public class InputData {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-    
-        
-//        Random rnd = new Random();
-//        int a = rnd.nextInt();
-//        for(int i=0;i<50;i++){
-//            double b = rnd.nextDouble();
-//            System.out.println(b);
-//        }
-//        System.out.println();
         
         int nVuelos = 60; //numero de vuelos que puede variar de acuerdo a la especificacion
         int nMinVuelos = 50;
