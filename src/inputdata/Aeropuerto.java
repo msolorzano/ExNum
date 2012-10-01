@@ -16,8 +16,9 @@ public class Aeropuerto {
     public int capacActual;
     public boolean principal;
     public String ciudad;
-    
-    public Aeropuerto(int x, int y, int capacMax, int capacActual, boolean principal, String ciudad){
+
+    public Aeropuerto(String nombre, double x, double y, int capacMax, int capacActual, boolean principal, String ciudad) {
+        this.nombre = nombre;
         this.x = x;
         this.y = y;
         this.capacMax = capacMax;
@@ -26,4 +27,6 @@ public class Aeropuerto {
         this.ciudad = ciudad;
     }
     
+    
+       
 }
