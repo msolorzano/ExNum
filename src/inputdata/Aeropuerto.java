@@ -9,12 +9,14 @@ package inputdata;
  * @author msolorzano
  */
 public class Aeropuerto {
+    private int idAeropuerto;
     private String nombre;
     private double x;
     private double y;
     private int capacMax;
     private int capacActual;
     private boolean principal;
+    private double costoAlmacen;
 
     public Aeropuerto(String nombre, double x, double y, int capacMax, int capacActual, boolean principal) {
         this.nombre = nombre;

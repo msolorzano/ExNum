@@ -32,14 +32,14 @@ public class InputData {
         //2. Se cargan todos los aeropuertos
         ArrayList<Aeropuerto> aeropuertos = cargarAeropuertos(nAeropuertos, maxH, maxV);
         
-        Collections.sort(aeropuertos, new Comparator<Aeropuerto>(){
-
-            @Override
-            public int compare(Aeropuerto o1, Aeropuerto o2) {
-                return o1.getCapacMax()-o2.getCapacMax();
-            }
-            
-        });
+//        Collections.sort(aeropuertos, new Comparator<Aeropuerto>(){
+//
+//            @Override
+//            public int compare(Aeropuerto o1, Aeropuerto o2) {
+//                return o1.getCapacMax()-o2.getCapacMax();
+//            }
+//            
+//        });
         
         for(int i=0 ; i< aeropuertos.size(); i++){
             Aeropuerto aux = aeropuertos.get(i);
@@ -48,7 +48,17 @@ public class InputData {
         }
         
         //3. Por cada aeropuerto, se calculara la distancia que se obtiene respecto a los demas
-        ArrayList<ArrayList<Conexion>> conexiones = cargarMatrizDeConexiones();
+        ArrayList<ArrayList<Conexion>> conexiones = cargarMatrizDeConexiones(aeropuertos);
+        
+        for (int i=0; i < conexiones.size(); i++){
+            //Imprime la ciudad respecto a la cual se analizaran las demas
+            ArrayList<Conexion> conexionesI = conexiones.get(i);
+            System.out.printf("%s :%n", conexionesI.get(0).aeropuertoInicial.getNombre());
+            for(int j=0; j < conexionesI.size(); j++){
+                Conexion aux = conexionesI.get(j);
+                System.out.printf("---> %s %f%n", aux.aeropuertoFinal.getNombre(), aux.distancia);
+            }
+        }
         
         //matriz["Aeropuerto1"]["Aeropuerto2"] = aleatorio(0,1) <= (100 - i(100/(nVuelos-1)))/100 ? 1 : 0;
         
@@ -60,7 +70,7 @@ public class InputData {
         
         Random rnd = new Random();
         
-        for(int i=0; i<nAeropuertos; i++){
+        for(int i=0; i<nAeropuertos; i++){ 
             int capac = rnd.nextInt(400) + 600;
             
             Aeropuerto aux = new Aeropuerto(
@@ -78,11 +88,49 @@ public class InputData {
     }
 
     private static int leerNumAeropuertos() {
-        return 60; //por dato del profe
+        return 5; //por dato del profe
     }
 
-    private static ArrayList<ArrayList<Conexion>> cargarMatrizDeConexiones() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private static ArrayList<ArrayList<Conexion>> cargarMatrizDeConexiones(ArrayList<Aeropuerto> aeropuertos) {
+        ArrayList<ArrayList<Conexion>> matrizConexiones = new ArrayList<ArrayList<Conexion>>();
+        
+        for (int i=0; i<aeropuertos.size(); i++){
+            
+            ArrayList<Conexion> listaConexionesAeropuertoi = new ArrayList<Conexion>();
+            
+            for (int j=0; j<aeropuertos.size(); j++){
+                if( j != i ){
+                    Conexion conexion = new Conexion();
+                    conexion.aeropuertoInicial = aeropuertos.get(i);
+                    conexion.aeropuertoFinal = aeropuertos.get(j);
+                    conexion.distancia = calcularDistancia(conexion.aeropuertoFinal.getX(), conexion.aeropuertoFinal.getY(),
+                                                            conexion.aeropuertoInicial.getX(), conexion.aeropuertoInicial.getY());
+                    listaConexionesAeropuertoi.add(conexion);
+                }
+            }
+            
+            //antes de meterla, deberia ordenar esta lista por distancia
+            
+            Collections.sort(listaConexionesAeropuertoi, new Comparator<Conexion>(){
+
+                @Override
+                public int compare(Conexion o1, Conexion o2) {
+                    return (int)(o1.distancia - o2.distancia);
+                }
+                
+            });
+            
+            matrizConexiones.add(listaConexionesAeropuertoi);
+        }
+        
+        return matrizConexiones;
+        
+    }
+
+    private static double calcularDistancia(double aFx, double aFy, double aIx, double aIy) {
+        double desplazamientoY = Math.pow(aFy - aIy, 2);
+        double desplazamientox = Math.pow(aFx - aIx, 2);
+        return Math.sqrt(desplazamientoY + desplazamientox);
     }
     
     
