@@ -144,12 +144,11 @@ public class InputData {
     }
 
     private static void concentrarVuelos(ArrayList<ArrayList<Conexion>> conexiones) {
-        Random rnd = new Random();
-        double probabilidadInicial = 1 - (1.0 / ((conexiones.size() - 1) * 2));
+        Random rnd = new Random(); //inicializo mi random
+        double probabilidadInicial = 1 - (1.0 / ((conexiones.size() - 1) * 2)); //la probilidad con la que inicia cada analisis de cada aeropuerto
         for(int i=0 ; i < conexiones.size(); i++){
             ArrayList<Conexion> conexionesI = conexiones.get(i);
-            //esta es la probabilidad inicial, alta para concentrar
-            double probabilidad = probabilidadInicial;
+            double probabilidad = probabilidadInicial; //esta es la probabilidad inicial, alta para concentrar
 //            System.out.println(conexionesI.get(1).aeropuertoInicial.getNombre());
 //            System.out.println("Probabilidad Inicial : " + probabilidad);
 //            double probabilidad = 1 - (1.0 / conexionesI.size()) + (1.0 / (conexionesI.size() * 2));
@@ -158,8 +157,15 @@ public class InputData {
                 Conexion conexion = conexionesI.get(j);
                 double randomico = rnd.nextDouble();
 //                System.out.println(probabilidad + " " + randomico + " " + (randomico < probabilidad));
-                conexion.conectado = randomico < probabilidad;
-                probabilidad -= (1.0 / (conexionesI.size()));
+                if(conexion.aeropuertoInicial.isPrincipal() || conexion.aeropuertoFinal.isPrincipal()){
+                    conexion.conectado = randomico < 0.8; //<<-- probabilidad asignada a los aeropuertos principales
+                }
+                else
+                {
+                    conexion.conectado = randomico < probabilidad;
+                }
+                
+                probabilidad -= (1.0 / (conexionesI.size())); //actualizo la probabilidad para el siguiente aeropuerto mas lejano
             }
 //            System.out.printf("----------------------------------------------------------------------------------------------------%n", null);
         }
