@@ -31,11 +31,14 @@ public class InputData {
         int nAeropuertos = leerNumAeropuertos();
         
         //2. Se cargan todos los aeropuertos
-        Aeropuerto[] aeropuertos = cargarAeropuertos(nAeropuertos);
+        ArrayList<Aeropuerto> aeropuertos = cargarAeropuertos(nAeropuertos);
+        
+        
+        
         
         
         //3. Por cada aeropuerto, se calculara la distancia que se obtiene respecto a los demas
-        float[][] mDistancia = calcularMatrizDeDistancias(aeropuertos);
+        //float[][] mDistancia = calcularMatrizDeDistancias(aeropuertos);
         
         
         //matriz["Aeropuerto1"]["Aeropuerto2"] = aleatorio(0,1) <= (100 - i(100/(nVuelos-1)))/100 ? 1 : 0;
@@ -43,17 +46,20 @@ public class InputData {
         
     }
 
-    private static Aeropuerto[] cargarAeropuertos(int nAeropuertos) {
-        Aeropuerto[] aeropuertos = new Aeropuerto[nAeropuertos];
+    private static ArrayList<Aeropuerto> cargarAeropuertos(int nAeropuertos) {
+        ArrayList<Aeropuerto> aeropuertos = new ArrayList<Aeropuerto>();
         
         Random rnd = new Random();
         
         for(int i=0; i<nAeropuertos; i++){
-            aeropuertos[i].x = rnd.nextDouble()*800;
-            aeropuertos[i].y = rnd.nextDouble()*800;
-            aeropuertos[i].capacActual = aeropuertos[i].capacMax = rnd.nextInt(400) + 600;
-            aeropuertos[i].principal = rnd.nextBoolean();
+            Aeropuerto aux = new Aeropuerto();
+            aux.nombre = "Aeropuerto " + i;
+            aux.x = rnd.nextDouble()*800;
+            aux.y = rnd.nextDouble()*800;
+            aux.capacActual = aux.capacMax = rnd.nextInt(400) + 600;
+            aux.principal = rnd.nextBoolean();
             
+            aeropuertos.add(aux);
         }        
         
         return aeropuertos;
@@ -64,7 +70,7 @@ public class InputData {
     }
 
     private static int leerNumAeropuertos() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return 60;
     }
     
     
