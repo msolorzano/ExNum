@@ -13,9 +13,7 @@ import java.util.ArrayList;
 public class DeSerializer {
 
     public static void main(String[] args) {
-        
-        // Aeropuerto(int x, int y, int capacMax, int capacActual, boolean principal, String ciudad)
-        
+             
         ArrayList<Aeropuerto> a = new ArrayList<Aeropuerto>();
         
         a.add(new Aeropuerto("Vega", 0, 0, 500, 0, true));
