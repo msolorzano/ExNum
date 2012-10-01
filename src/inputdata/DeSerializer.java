@@ -30,7 +30,7 @@ public class DeSerializer {
         a = serial.aDeserializa("miguel.xml");
         
         for(int i = 0; i < a.size(); i++){
-            System.out.println(a.get(i).nombre);
+            System.out.println(a.get(i).getNombre());
         }
     }
 }
