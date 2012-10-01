@@ -52,12 +52,13 @@ public class InputData {
         Random rnd = new Random();
         
         for(int i=0; i<nAeropuertos; i++){
-            Aeropuerto aux = new Aeropuerto();
-            aux.nombre = "Aeropuerto " + i;
-            aux.x = rnd.nextDouble()*800;
-            aux.y = rnd.nextDouble()*800;
-            aux.capacActual = aux.capacMax = rnd.nextInt(400) + 600;
-            aux.principal = rnd.nextBoolean();
+            Aeropuerto aux = new Aeropuerto(
+            "Aeropuerto " + i,
+            rnd.nextDouble()*800,
+            rnd.nextDouble()*800,
+            rnd.nextInt(400) + 600,
+            rnd.nextInt(400) + 600,    
+            rnd.nextBoolean());                  
             
             aeropuertos.add(aux);
         }        
