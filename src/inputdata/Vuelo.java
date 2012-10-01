@@ -16,4 +16,5 @@ public class Vuelo {
     private Date fLlegada;
     private int capacEnvioMax;
     private int capacEnvioUsada;
+    private double costoAlquiler;
 }
