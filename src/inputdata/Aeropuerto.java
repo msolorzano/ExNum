@@ -9,8 +9,9 @@ package inputdata;
  * @author msolorzano
  */
 public class Aeropuerto {
-    public int x;
-    public int y;
+    public String nombre;
+    public double x;
+    public double y;
     public int capacMax;
     public int capacActual;
     public boolean principal;

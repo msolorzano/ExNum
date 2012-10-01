@@ -23,6 +23,8 @@ public class InputData {
         int nVuelos = 60; //numero de vuelos que puede variar de acuerdo a la especificacion
         int nMinVuelos = 50;
         int nMinGrafos = 30; //numero de iteraciones como data de entrada osea los grafos
+        int maxH = 800; //coordenada maxima en el eje horizontal
+        int maxV = 600; //coordenada maxima en el eje vertical
         
         //1. Se obtiene el numero de aeropuertos
         // select count(*) from Aeropuerto
@@ -45,21 +47,16 @@ public class InputData {
         Aeropuerto[] aeropuertos = new Aeropuerto[nAeropuertos];
         
         Random rnd = new Random();
-        int maxH, maxV;
         
         for(int i=0; i<nAeropuertos; i++){
-            //aeropuertos[i].x = rnd.;
-            aeropuertos[i].y = 0;
-            aeropuertos[i].capacActual = 0;
-            aeropuertos[i].capacMax = 0;
-            aeropuertos[i].principal = true;
+            aeropuertos[i].x = rnd.nextDouble()*800;
+            aeropuertos[i].y = rnd.nextDouble()*800;
+            aeropuertos[i].capacActual = aeropuertos[i].capacMax = rnd.nextInt(400) + 600;
+            aeropuertos[i].principal = rnd.nextBoolean();
             
-        }
+        }        
         
-        
-        
-        
-        throw new UnsupportedOperationException("Not yet implemented");
+        return aeropuertos;
     }
 
     private static float[][] calcularMatrizDeDistancias(Aeropuerto[] aeropuertos) {
