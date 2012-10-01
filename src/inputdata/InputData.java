@@ -5,8 +5,8 @@
 package inputdata;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
+
 
 /**
  *
@@ -32,18 +32,23 @@ public class InputData {
         //2. Se cargan todos los aeropuertos
         ArrayList<Aeropuerto> aeropuertos = cargarAeropuertos(nAeropuertos, maxH, maxV);
         
+        Collections.sort(aeropuertos, new Comparator<Aeropuerto>(){
+
+            @Override
+            public int compare(Aeropuerto o1, Aeropuerto o2) {
+                return o1.getCapacMax()-o2.getCapacMax();
+            }
+            
+        });
+        
         for(int i=0 ; i< aeropuertos.size(); i++){
             Aeropuerto aux = aeropuertos.get(i);
             System.out.printf("%s\t%f\t%f\t%d\t%d\t%b%n", aux.getNombre(), aux.getX(), aux.getY(),
                     aux.getCapacActual(), aux.getCapacMax(), aux.isPrincipal());
         }
         
-        
-        
-        
         //3. Por cada aeropuerto, se calculara la distancia que se obtiene respecto a los demas
-        //float[][] mDistancia = calcularMatrizDeDistancias(aeropuertos);
-        
+        ArrayList<ArrayList<Conexion>> conexiones = cargarMatrizDeConexiones();
         
         //matriz["Aeropuerto1"]["Aeropuerto2"] = aleatorio(0,1) <= (100 - i(100/(nVuelos-1)))/100 ? 1 : 0;
         
@@ -72,13 +77,14 @@ public class InputData {
         return aeropuertos;
     }
 
-    private static float[][] calcularMatrizDeDistancias(Aeropuerto[] aeropuertos) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     private static int leerNumAeropuertos() {
         return 60; //por dato del profe
+    }
+
+    private static ArrayList<ArrayList<Conexion>> cargarMatrizDeConexiones() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
     
     
 }
+
