@@ -25,6 +25,14 @@ public class DeSerializer {
         
         Serializer serial = new Serializer();
         
-        serial.serializacion(a, "miguel.xml");
+        serial.serializa(a, "miguel.xml");
+        
+        //a = new ArrayList<Aeropuerto>();
+        
+        a = serial.deserializa("miguel.xml");
+        
+        for(int i = 0; i < a.size(); i++){
+            System.out.println(a.get(i).nombre);
+        }
     }
 }

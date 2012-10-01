@@ -6,7 +6,6 @@
     <capacMax>500</capacMax>
     <capacActual>0</capacActual>
     <principal>true</principal>
-    <ciudad>Lima</ciudad>
   </inputdata.Aeropuerto>
   <inputdata.Aeropuerto>
     <nombre>Solórzano</nombre>
@@ -15,7 +14,6 @@
     <capacMax>1000</capacMax>
     <capacActual>0</capacActual>
     <principal>true</principal>
-    <ciudad>Miami</ciudad>
   </inputdata.Aeropuerto>
   <inputdata.Aeropuerto>
     <nombre>Juárez</nombre>
@@ -24,7 +22,6 @@
     <capacMax>400</capacMax>
     <capacActual>0</capacActual>
     <principal>false</principal>
-    <ciudad>Bruselas</ciudad>
   </inputdata.Aeropuerto>
   <inputdata.Aeropuerto>
     <nombre>Chávez</nombre>
@@ -33,6 +30,5 @@
     <capacMax>600</capacMax>
     <capacActual>0</capacActual>
     <principal>false</principal>
-    <ciudad>Dakar</ciudad>
   </inputdata.Aeropuerto>
 </list>
