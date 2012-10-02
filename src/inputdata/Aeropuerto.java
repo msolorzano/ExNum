@@ -19,6 +19,7 @@ public class Aeropuerto {
     private double costoAlmacen;
     private String ciudad;
     private String continente;
+    private boolean flag = false; //para marcar si ya pasaste por ahi o no GRASP
 
     public Aeropuerto(String nombre, double x, double y, int capacMax, int capacActual, boolean principal) {
         this.nombre = nombre;
@@ -84,6 +85,14 @@ public class Aeropuerto {
 
     public String getContinente() {
         return continente;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
     
     
