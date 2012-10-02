@@ -96,7 +96,7 @@ public class InputData {
     }
 
     private static int leerNumAeropuertos() {
-        return 30; //por dato del profe
+        return 20; //por dato del profe
     }
 
     private static ArrayList<ArrayList<Conexion>> cargarMatrizDeConexiones(ArrayList<Aeropuerto> aeropuertos) {
@@ -156,18 +156,24 @@ public class InputData {
             for(int j=0 ; j < conexionesI.size(); j++){
                 Conexion conexion = conexionesI.get(j);
                 double randomico = rnd.nextDouble();
-//                System.out.println(probabilidad + " " + randomico + " " + (randomico < probabilidad));
+                /*
+                 * Si alguno de los aeropuertos en donde se quiere generar la conexion es un aeropuerto principal
+                 * puede ser el aeropuerto de salida como el aeropuerto de llegada, entonces la probabilidad deberia aumentar
+                 * y ser distinta pues por ser aeropuerto principal debemos darle mas opcion a que se de la conexion
+                 */
                 if(conexion.aeropuertoInicial.isPrincipal() || conexion.aeropuertoFinal.isPrincipal()){
+//                    System.out.println("0.8" + " " + randomico + " " + (randomico < 0.8));
                     conexion.conectado = randomico < 0.8; //<<-- probabilidad asignada a los aeropuertos principales
                 }
                 else
                 {
+//                    System.out.println(probabilidad + " " + randomico + " " + (randomico < probabilidad));
                     conexion.conectado = randomico < probabilidad;
                 }
                 
                 probabilidad -= (1.0 / (conexionesI.size())); //actualizo la probabilidad para el siguiente aeropuerto mas lejano
             }
-//            System.out.printf("----------------------------------------------------------------------------------------------------%n", null);
+            System.out.printf("----------------------------------------------------------------------------------------------------%n", null);
         }
     }
     

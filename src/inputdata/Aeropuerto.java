@@ -17,6 +17,8 @@ public class Aeropuerto {
     private int capacActual;
     private boolean principal;
     private double costoAlmacen;
+    private String ciudad;
+    private String continente;
 
     public Aeropuerto(String nombre, double x, double y, int capacMax, int capacActual, boolean principal) {
         this.nombre = nombre;
@@ -27,6 +29,19 @@ public class Aeropuerto {
         this.principal = principal;
     }
 
+    public Aeropuerto(String nombre, double x, double y, int capacMax, int capacActual, 
+            boolean principal, double costoAlmacen, String ciudad, String continente) {
+        this.nombre = nombre;
+        this.x = x;
+        this.y = y;
+        this.capacMax = capacMax;
+        this.capacActual = capacActual;
+        this.principal = principal;
+        this.costoAlmacen = costoAlmacen;
+        this.ciudad = ciudad;
+        this.continente = continente;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -57,6 +72,18 @@ public class Aeropuerto {
 
     public boolean isPrincipal() {
         return principal;
+    }
+
+    public double getCostoAlmacen() {
+        return costoAlmacen;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public String getContinente() {
+        return continente;
     }
     
     
