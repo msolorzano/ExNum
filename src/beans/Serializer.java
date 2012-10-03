@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package inputdata;
+package beans;
 
 import com.thoughtworks.xstream.XStream;
 import java.io.FileReader;

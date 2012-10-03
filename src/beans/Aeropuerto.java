@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package inputdata;
+package beans;
 
 /**
  *
@@ -30,8 +30,9 @@ public class Aeropuerto {
         this.principal = principal;
     }
 
-    public Aeropuerto(String nombre, double x, double y, int capacMax, int capacActual, 
+    public Aeropuerto(int idAeropuerto, String nombre, double x, double y, int capacMax, int capacActual, 
             boolean principal, double costoAlmacen, String ciudad, String continente) {
+        this.idAeropuerto = idAeropuerto;
         this.nombre = nombre;
         this.x = x;
         this.y = y;
@@ -93,6 +94,10 @@ public class Aeropuerto {
 
     public void setFlag(boolean flag) {
         this.flag = flag;
+    }
+
+    public int getIdAeropuerto() {
+        return idAeropuerto;
     }
     
     

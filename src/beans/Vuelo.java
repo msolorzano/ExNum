@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package inputdata;
+package beans;
 import java.util.Date;
         
 /**
@@ -22,9 +22,11 @@ public class Vuelo {
     private int capacEnvioUsado;
     private double costoAlquiler;
     private double tiempoAlmacenaje; //tiempo maximo de almacenaje 12 horas
-//    private double tVuelo; generar un metodo que a partir de diferencia de fechas genere la diferencia en tiempo en milisegundos
+    private double tVuelo; // generar un metodo que a partir de diferencia de fechas genere la diferencia en tiempo en milisegundos
 
-    public Vuelo(Aeropuerto origen, Aeropuerto destino, Date fSalida, Date fLlegada, int capacEnvioMax, int capacEnvioUsado, double costoAlquiler) {
+    public Vuelo(Aeropuerto origen, Aeropuerto destino, Date fSalida, Date fLlegada, 
+            int capacEnvioMax, int capacEnvioUsado, double costoAlquiler, double tiempoAlmacenaje,
+            double tVuelo) {
         this.origen = origen;
         this.destino = destino;
         this.fSalida = fSalida;
@@ -32,6 +34,8 @@ public class Vuelo {
         this.capacEnvioMax = capacEnvioMax;
         this.capacEnvioUsado = capacEnvioUsado;
         this.costoAlquiler = costoAlquiler;
+        this.tiempoAlmacenaje = tiempoAlmacenaje;
+        this.tVuelo = tVuelo;
     }
 
     public Vuelo() {
@@ -91,6 +95,38 @@ public class Vuelo {
 
     public void setCostoAlquiler(double costoAlquiler) {
         this.costoAlquiler = costoAlquiler;
+    }
+
+    public int getIdVuelo() {
+        return idVuelo;
+    }
+
+    public void setIdVuelo(int idVuelo) {
+        this.idVuelo = idVuelo;
+    }
+
+    public int getIdOrigen() {
+        return idOrigen;
+    }
+
+    public void setIdOrigen(int idOrigen) {
+        this.idOrigen = idOrigen;
+    }
+
+    public int getIdDestino() {
+        return idDestino;
+    }
+
+    public void setIdDestino(int idDestino) {
+        this.idDestino = idDestino;
+    }
+
+    public double getTiempoAlmacenaje() {
+        return tiempoAlmacenaje;
+    }
+
+    public double gettVuelo() {
+        return tVuelo;
     }
     
     

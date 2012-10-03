@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package inputdata;
+package beans;
 
 //import java.sql.Date;
 import java.text.ParseException;
@@ -26,14 +26,14 @@ import javax.sound.midi.SysexMessage;
 public class InputData {
     
     //indica cual es la probabilidad que un aeropuerto salga principal
-    private static int numAeropuertos = 30;
+    private static int numAeropuertos = 60;
     private static int probAeropuertoPrincipal = 5; 
     private static int capacMaxAvion = 300;
     private static int capacMinAvion = 200;
     private static int capacMaxAlmacenAeropuerto = 1000;
     private static int capacMinAlmacenAeropuerto = 600;
-    private static int costoMaxAvion = 400;
-    private static int costoMinAvion = 600;
+    private static int costoMaxAvion = 600;
+    private static int costoMinAvion = 400;
     private static int maxH = 800;
     private static int maxV = 600;
     private static int distanciaMaxDeVuelo;
@@ -86,11 +86,29 @@ public class InputData {
         ArrayList<Aeropuerto> aeropuertos = cargarAeropuertos();
 //        imprimirAeropuertos(aeropuertos);
         
-        //3. Por cada aeropuerto, se calculara la distancia que se obtiene respecto a los demas
-        ArrayList<ArrayList<Conexion>> conexiones = cargarMatrizDeConexiones(aeropuertos);
-        concentrarVuelos(conexiones);
-        imprimirMatrizConexiones(conexiones);
         
+        //3. Por cada aeropuerto, se calculara la distancia que se obtiene respecto a los demas
+        Calendar calAuxiliar = Calendar.getInstance();
+        ArrayList<ArrayList<Conexion>> conexiones = cargarMatrizDeConexiones(aeropuertos);
+        concentrarVuelos(conexiones, calAuxiliar);
+        ArrayList<Vuelo> vuelos = cargarVuelos(conexiones);
+        
+        calAuxiliar.add(Calendar.DAY_OF_YEAR, 1);
+        conexiones = cargarMatrizDeConexiones(aeropuertos);
+        concentrarVuelos(conexiones, calAuxiliar);
+        vuelos.addAll(cargarVuelos(conexiones));
+//        imprimirMatrizConexiones(conexiones);
+        
+        //4. Lista de Vuelos
+        
+        
+        //5. Lista de Envios
+        ArrayList<Envio> envios = cargarEnvios(40);
+        
+        Serializer xml2file = new Serializer();
+        xml2file.serializa(aeropuertos, "aeropuertos.xml");
+        xml2file.serializa(vuelos, "vuelos.xml");
+        xml2file.serializa(envios, "envios.xml");
         
     }
     
@@ -107,8 +125,8 @@ public class InputData {
         
         for(int i=0 ; i< aeropuertos.size(); i++){
             Aeropuerto aux = aeropuertos.get(i);
-            System.out.printf("%s\t%f\t%f\t%d\t%d\t%b%n", aux.getNombre(), aux.getX(), aux.getY(),
-                    aux.getCapacActual(), aux.getCapacMax(), aux.isPrincipal());
+            System.out.printf("%s\t%f\t%f\t%d\t%d\t%b\t%f%n", aux.getNombre(), aux.getX(), aux.getY(),
+                    aux.getCapacActual(), aux.getCapacMax(), aux.isPrincipal(), aux.getCostoAlmacen());
         }        
         
     }
@@ -122,6 +140,15 @@ public class InputData {
             for(int j=0; j < conexionesI.size(); j++){
                 Conexion aux = conexionesI.get(j);
                 System.out.printf("---> %s %f %b%n", aux.aeropuertoFinal.getNombre(), aux.distancia, aux.conectado);
+                for(int k=0; k < aux.listaVuelos.size(); k++){
+                    Vuelo vuelo = aux.listaVuelos.get(k);
+                    System.out.println("********* Fecha Salida: " + vuelo.getfSalida());
+                    System.out.println("********* Fecha Llegada: " + vuelo.getfLlegada());
+                    System.out.println("********* Capacidad Envio Maxima: " + vuelo.getCapacEnvioMax());
+                    System.out.println("********* Costo Alquiler: " + vuelo.getCostoAlquiler());
+                    System.out.println("********* Tiempo Almacenaje: " + vuelo.getTiempoAlmacenaje());
+                    System.out.println("********* Tiempo De Vuelo: " + vuelo.gettVuelo());
+                }
             }
         }
     }
@@ -135,15 +162,16 @@ public class InputData {
             int capac = rnd.nextInt(capacMaxAlmacenAeropuerto - capacMinAlmacenAeropuerto) + capacMinAlmacenAeropuerto;
             
             Aeropuerto aux = new Aeropuerto(
-            "Aeropuerto " + i, //nombre del aeropuerto
-            rnd.nextDouble() * maxH, // coordenada respecto al eje X
-            rnd.nextDouble() * maxV, // coordenada respecto al eje Y
-            capac, //capacidad maxima de paquetes del almacen del aeropuerto
-            capac, //capacidad actual de paquetes del almacen del aeropuerto
-            (rnd.nextDouble() * 100 ) < probAeropuertoPrincipal ? true : false, //si es un aeropuerto principal, esto es para que tenga poca probabilidad de salir principal
-            (rnd.nextInt(3) + 3) / 100, //costo por almacenar paquetes entre 0.03 y 0.05 unidades monetarias
-            null, //ciudad
-            null); //continente
+                i + 1,
+                "Aeropuerto " + i, //nombre del aeropuerto
+                rnd.nextDouble() * maxH, // coordenada respecto al eje X
+                rnd.nextDouble() * maxV, // coordenada respecto al eje Y
+                capac, //capacidad maxima de paquetes del almacen del aeropuerto
+                0, //capacidad actual de paquetes del almacen del aeropuerto
+                (rnd.nextDouble() * 100 ) < probAeropuertoPrincipal ? true : false, //si es un aeropuerto principal, esto es para que tenga poca probabilidad de salir principal
+                (rnd.nextInt(3) + 3.0) / 100, //costo por almacenar paquetes entre 0.03 y 0.05 unidades monetarias
+                null, //ciudad
+                null); //continente
             
             aeropuertos.add(aux);
         }        
@@ -199,7 +227,8 @@ public class InputData {
         return Math.sqrt(desplazamientoY + desplazamientox);
     }
 
-    private static void concentrarVuelos(ArrayList<ArrayList<Conexion>> conexiones) {
+    private static void concentrarVuelos(ArrayList<ArrayList<Conexion>> conexiones,
+            Calendar calendarioEntrada) {
         Random rnd = new Random(); //inicializo mi random
         double probabilidadInicial = 1 - (1.0 / ((conexiones.size() - 1) * 2)); //la probilidad con la que inicia cada analisis de cada aeropuerto
         for(int i=0 ; i < conexiones.size(); i++){
@@ -237,14 +266,14 @@ public class InputData {
                 if (conexion.conectado){ //ya hay vuelos entre los aeropuertos ahora falta indicar cuantos
                     int numVuelos = 1; //lo inicializo con 1 porque falta indicar a los aeropuertos sus continentes
                     
-                    if(conexion.aeropuertoInicial.getContinente().equals(conexion.aeropuertoFinal.getContinente())){
-                        //Si los aeropuertos pertenecen al mismo continente, se genera un vuelo                        
-                        numVuelos = 1;
-                    }
-                    else{
-                        //Si los aeropuertos pertenecen a distintos continentes, 1 o 2
-                        numVuelos = rnd.nextInt(1) + 1;
-                    }
+//                    if(conexion.aeropuertoInicial.getContinente().equals(conexion.aeropuertoFinal.getContinente())){
+//                        //Si los aeropuertos pertenecen al mismo continente, se genera un vuelo                        
+//                        numVuelos = 1;
+//                    }
+//                    else{
+//                        //Si los aeropuertos pertenecen a distintos continentes, 1 o 2
+//                        numVuelos = rnd.nextInt(1) + 1;
+//                    }
                     
                     /*
                      * Aqui se generan las horas de salida y de llegada de cada vuelo, la hora de salida se genera
@@ -255,12 +284,12 @@ public class InputData {
                     for(int k = 0; k < numVuelos; k++){
 
                         //1. Se crea aleatoriamente la fecha de salida y de llegada
-                        Calendar fechaAux = Calendar.getInstance();
+                        Calendar fechaAux = (Calendar)calendarioEntrada.clone();
                         fechaAux.set(Calendar.HOUR_OF_DAY, rnd.nextInt(24)); //genera una hora aleatorio de 0 - 23
                         fechaAux.set(Calendar.MINUTE, rnd.nextInt(3) * 15); //genera minutos aleatorios entre 0 - 15 - 30 - 45
                         fechaAux.set(Calendar.SECOND, 0);
                         Date fSalida = fechaAux.getTime();
-                        int tiempoVuelo = (int) (conexion.distancia * tiempoMaxDeVuelo / distanciaMaxDeVuelo); 
+                        int tiempoVuelo = (int) (3600 * 1000 * conexion.distancia * tiempoMaxDeVuelo / distanciaMaxDeVuelo); 
                         //si este tiempo supera las 12 o 24 horas, segun corresponda, esta mal, podria ser un try catch 
                         //con un log que indique cuando sucede esto
                         fechaAux.add(Calendar.MILLISECOND, tiempoVuelo);
@@ -275,9 +304,13 @@ public class InputData {
                                 fLlegada, //fecha de llegada del vuelo
                                 rnd.nextInt(capacMaxAvion-capacMinAvion) + capacMinAvion, //capacidad maxima de paquetes del vuelo
                                 0, //capacidad utilizada de paquetes del vuelo
-                                rnd.nextInt(costoMaxAvion-costoMinAvion) + costoMinAvion); //costo de alquiler del avion
+                                rnd.nextInt(costoMaxAvion-costoMinAvion) + costoMinAvion, //costo de alquiler del avion
+                                rnd.nextInt(12) + 1, //tiempo de almacenaje de los paquetes
+                                tiempoVuelo / 3600000.0); // tiempo de vuelo en horas
 
-                        
+//                        System.out.println(vuelo.getOrigen().getNombre() + " " + vuelo.getDestino().getNombre()
+//                                + " "  + vuelo.getfSalida() + " " + vuelo.getfLlegada() + " " + vuelo.getCapacEnvioMax() 
+//                                + " " + vuelo.getCostoAlquiler() + " " + vuelo.getTiempoAlmacenaje() + " " + vuelo.gettVuelo());
                         //3. Se agrega el vuelo a la lista de vuelos que tendra dicha conexion ya valida
                         conexion.listaVuelos.add(vuelo);
                     }
@@ -287,6 +320,43 @@ public class InputData {
             }
 //            System.out.printf("----------------------------------------------------------------------------------------------------%n", null);
         }
+    }
+
+    private static ArrayList<Vuelo> cargarVuelos(ArrayList<ArrayList<Conexion>> conexiones) {
+        ArrayList<Vuelo> resultado = new ArrayList<Vuelo>();
+        
+        for(int i=0; i<conexiones.size(); i++){
+            ArrayList<Conexion> conexionesI = conexiones.get(i);
+            for(int j=0; j<conexionesI.size(); j++){
+                Conexion conexionAux = conexionesI.get(j);
+                for(int k=0; k<conexionAux.listaVuelos.size(); k++){
+                    Vuelo vuelo = conexionAux.listaVuelos.get(k);
+                    vuelo.setIdOrigen(conexionAux.aeropuertoInicial.getIdAeropuerto());
+                    vuelo.setIdDestino(conexionAux.aeropuertoFinal.getIdAeropuerto());
+                    resultado.add(vuelo);
+                }
+            }
+        }
+        
+        return resultado;
+    }
+
+    private static ArrayList<Envio> cargarEnvios(int numEnvios) {
+        ArrayList<Envio> envios = new ArrayList<Envio>();
+        Random rnd = new Random();
+        
+        Calendar cal = Calendar.getInstance();
+        cal.roll(Calendar.DAY_OF_YEAR, -1);
+        Date fecha = cal.getTime();
+        
+        for (int i=0; i<numEnvios; i++){
+            Envio envio = new Envio();
+            envio.idAeropuertoInicio = rnd.nextInt(numAeropuertos)+1;
+            envio.idAeropuertoFin = rnd.nextInt(numAeropuertos)+1;
+            envio.fecha = fecha;
+            envios.add(envio);
+        }
+        return envios;
     }
     
     
