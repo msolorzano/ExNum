@@ -61,8 +61,8 @@ public class InputData {
         Random rnd = new Random();
         
         for(int i=0; i<numeroCasosAProbar; i++){
-            int nAeropuertos = rnd.nextInt(numMaxAeropuertos-numMinAeropuertos+1)+ numMinAeropuertos;
-
+//            int nAeropuertos = rnd.nextInt(numMaxAeropuertos-numMinAeropuertos+1)+ numMinAeropuertos;
+            int nAeropuertos = numMinAeropuertos;
             //Se cargan todos los aeropuertos
             ArrayList<Aeropuerto> aeropuertos = cargarAeropuertos(nAeropuertos);
             //imprimirAeropuertos(aeropuertos);
@@ -85,9 +85,9 @@ public class InputData {
             ArrayList<Envio> envios = cargarEnvios(nAeropuertos);
 
             Serializer xml2file = new Serializer();
-            xml2file.serializa(aeropuertos, "xml/aeropuertos"+(i+1)+".xml");
-            xml2file.serializa(vuelos, "xml/vuelos"+(i+1)+".xml");
-            xml2file.serializa(envios, "xml/envios"+(i+1)+".xml");
+            xml2file.serializa(aeropuertos, "xml/aeropuertos"+i+".xml");
+            xml2file.serializa(vuelos, "xml/vuelos"+i+".xml");
+            xml2file.serializa(envios, "xml/envios"+i+".xml");
         }
     }
     
