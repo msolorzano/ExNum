@@ -4,5 +4,9 @@
 *.jar
 *.war
 *.ear
+
+
+# Netbeans' Folders #
 /build/
 /dist/
+/nbproject/private/
