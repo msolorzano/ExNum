@@ -74,6 +74,8 @@ public class InputData {
             ArrayList<ArrayList<Conexion>> conexiones = cargarMatrizDeConexiones(aeropuertos);
             concentrarVuelos(conexiones, calAuxiliar);
             ArrayList<Vuelo> vuelos = cargarVuelos(conexiones);
+            
+            System.out.println(vuelos.size());
 
             calAuxiliar.add(Calendar.DAY_OF_YEAR, 1);
 
@@ -82,12 +84,14 @@ public class InputData {
             vuelos.addAll(cargarVuelos(conexiones));
             //imprimirMatrizConexiones(conexiones);
 
+            System.out.println(vuelos.size());
+            
             ArrayList<Envio> envios = cargarEnvios(nAeropuertos);
 
-            Serializer xml2file = new Serializer();
-            xml2file.serializa(aeropuertos, "xml/aeropuertos"+i+".xml");
-            xml2file.serializa(vuelos, "xml/vuelos"+i+".xml");
-            xml2file.serializa(envios, "xml/envios"+i+".xml");
+//            Serializer xml2file = new Serializer();
+//            xml2file.serializa(aeropuertos, "xml/aeropuertos"+i+".xml");
+//            xml2file.serializa(vuelos, "xml/vuelos"+i+".xml");
+//            xml2file.serializa(envios, "xml/envios"+i+".xml");
         }
     }
     
